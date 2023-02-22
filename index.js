@@ -51,9 +51,11 @@ function draw() {
                 }
             })
         })
+        cells[i].addEventListener('click', (e) => {
+            cells[i].style.backgroundColor = 'black';
+        })
     }
 }
-
 
 
 window.onload = () => {
