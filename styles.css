@@ -1,0 +1,28 @@
+
+.container {
+    display:flex; 
+    align-items:center;
+    margin:0 auto;
+}
+.grid {
+    display:grid;
+    height:600px;
+    width:600px;
+}
+
+.cell {
+    border:1px solid black;
+}
+
+@media (max-width:750px) {
+    .grid {
+        height:270px;
+        width:270px;
+    }
+}
+@media (max-width:350px) {
+    .grid {
+        height:200px;
+        width:200px;
+    }
+}

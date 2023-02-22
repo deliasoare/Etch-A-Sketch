@@ -2,15 +2,18 @@
 <html lang="en">
     <head>
         <title>Etch a Sketch</title>
-        <meta charset="utf-8">
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="styles.css" rel="stylesheet">
     </head>
     <body>
-        <h2>Etch a Sketch </h2>
-        <input class="rangeValue" type="range" min="1" max="64" value="16"> 
-        <div class="rangeLabel"></div>
+            <h2 class="title">Etch a Sketch </h2>
         <div class="container">
-            
+            <div class="range">
+                <input class="rangeSlider" type="range" min="1" max="64" value="16"> 
+                <div class="rangeLabel"></div>
+            </div>
+            <div class="grid"></div>
         </div>
     </body>
     <script src="index.js"></script>
