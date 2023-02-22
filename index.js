@@ -66,4 +66,3 @@ window.onload = () => {
     updateGrid(val);
     draw(drawColor);
 }
-
