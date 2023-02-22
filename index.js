@@ -9,8 +9,6 @@ let drawColor = DEFAULT_DRAW_COLOR;
 const rangeSlider = document.querySelector('.rangeSlider');
 const rangeLabel = document.querySelector('.rangeLabel');
 const grid = document.querySelector('.grid');
-let cells = document.querySelectorAll('.cell');
-
 
 rangeSlider.addEventListener('change', () => {updateGrid(); draw();});
 rangeSlider.addEventListener('mousemove', () => {updateRangeLabel();});
