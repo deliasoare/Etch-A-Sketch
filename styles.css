@@ -14,7 +14,10 @@
     user-select:none;
 }
 
-
+.range {
+    display:flex;
+    flex-direction:column;
+}
 @media (max-width:1000px) {
     .grid {
         height:270px;

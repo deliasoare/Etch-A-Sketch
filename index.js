@@ -9,10 +9,12 @@ let drawColor = DEFAULT_DRAW_COLOR;
 const rangeSlider = document.querySelector('.rangeSlider');
 const rangeLabel = document.querySelector('.rangeLabel');
 const grid = document.querySelector('.grid');
+const colorInput = document.querySelector('.drawColor');
 
-rangeSlider.addEventListener('change', () => {updateGrid(); draw();});
+rangeSlider.addEventListener('change', () => {updateGrid(); draw(drawColor);});
 rangeSlider.addEventListener('mousemove', () => {updateRangeLabel();});
 rangeSlider.addEventListener('touchmove', () => {updateRangeLabel();});
+colorInput.addEventListener('change', () => {changeColor(colorInput.value); draw(drawColor);})
 
 
 function updateRangeLabel() {
@@ -32,12 +34,12 @@ function updateGrid() {
     }
 }
 
-function draw() {
+function draw(drawColor) {
     const cells = document.querySelectorAll('.cell');
     for (let i = 0; i < cells.length; i++) {
         cells[i].addEventListener('mousemove', (e) => {
             if (e.buttons === 1) {
-                cells[i].style.backgroundColor = 'black';
+                cells[i].style.backgroundColor = drawColor;
             }
         })
         cells[i].addEventListener('touchmove', (e) => {
@@ -45,20 +47,23 @@ function draw() {
             var realTarget = document.elementFromPoint(myLocation.clientX, myLocation.clientY);
             cells.forEach(cell => {
                 if (realTarget === cell) {
-                    cell.style.backgroundColor = 'black';
+                    cell.style.backgroundColor = drawColor;
                 }
             })
         })
         cells[i].addEventListener('click', (e) => {
-            cells[i].style.backgroundColor = 'black';
+            cells[i].style.backgroundColor = drawColor;
         })
     }
 }
 
+function changeColor(value) {
+    drawColor = value;
+}
 
 window.onload = () => {
     updateRangeLabel(val);
     updateGrid(val);
-    draw();
+    draw(drawColor);
 }
 
