@@ -13,10 +13,11 @@ const grid = document.querySelector('.grid');
 const colorInput = document.querySelector('.drawColor');
 const backgroundInput = document.querySelector('.backgroundColor');
 
-rangeSlider.addEventListener('change', () => {updateGrid(); draw(drawColor);});
+rangeSlider.addEventListener('change', () => {changeBackgroundColor(backgroundColor); updateGrid(backgroundColor); draw(drawColor);});
 rangeSlider.addEventListener('mousemove', () => {updateRangeLabel();});
 rangeSlider.addEventListener('touchmove', () => {updateRangeLabel();});
-colorInput.addEventListener('change', () => {changeColor(colorInput.value); console.log(drawColor); draw(drawColor);});
+colorInput.addEventListener('change', () => {changeColor(colorInput.value); draw(drawColor);});
+backgroundInput.addEventListener('input', () => {console.log(backgroundInput.value);changeBackgroundColor(backgroundInput.value);});;
 
 
 
@@ -25,7 +26,7 @@ function updateRangeLabel() {
     rangeLabel.textContent = `${val} x ${val}`;
 }
 
-function updateGrid() {
+function updateGrid(backgroundColor="white") {
     grid.innerHTML = '';
     const val = rangeSlider.value;
     grid.style.gridTemplateColumns = `repeat(${val}, 1fr)`;
@@ -33,7 +34,7 @@ function updateGrid() {
     for (let i = 1; i <= val * val; i++) {
         const cell = document.createElement('div');
         cell.className = 'cell';
-        cell.style.backgroundColor = 'white';
+        cell.style.backgroundColor = backgroundColor;
         grid.appendChild(cell);
     }
 }
@@ -66,8 +67,8 @@ function changeColor(value) {
 
 function changeBackgroundColor(value) {
     const cells = document.querySelectorAll('.cell');
+    backgroundColor = value;
     cells.forEach(cell => {
-        console.log(value);
         cell.style.backgroundColor = value;
     })
 }
