@@ -8,11 +8,12 @@
     display:grid;
     height:500px;
     width:500px;
-}
-
-.cell {
     border:1px solid black;
 }
+.rangeSlider, .cell {
+    user-select:none;
+}
+
 
 @media (max-width:1000px) {
     .grid {
@@ -25,8 +26,4 @@
         height:200px;
         width:200px;
     }
-}
-
-.grid {
-    display:none;
 }
