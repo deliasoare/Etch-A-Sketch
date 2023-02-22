@@ -6,15 +6,15 @@
 }
 .grid {
     display:grid;
-    height:600px;
-    width:600px;
+    height:500px;
+    width:500px;
 }
 
 .cell {
     border:1px solid black;
 }
 
-@media (max-width:750px) {
+@media (max-width:1000px) {
     .grid {
         height:270px;
         width:270px;
@@ -25,4 +25,8 @@
         height:200px;
         width:200px;
     }
+}
+
+.grid {
+    display:none;
 }
