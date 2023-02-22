@@ -5,16 +5,19 @@ const DEFAULT_DRAW_COLOR = 'black';
 
 let val = DEFAULT_VALUE;
 let drawColor = DEFAULT_DRAW_COLOR;
+let backgroundColor = DEFAULT_BACKGROUND;
 
 const rangeSlider = document.querySelector('.rangeSlider');
 const rangeLabel = document.querySelector('.rangeLabel');
 const grid = document.querySelector('.grid');
 const colorInput = document.querySelector('.drawColor');
+const backgroundInput = document.querySelector('.backgroundColor');
 
 rangeSlider.addEventListener('change', () => {updateGrid(); draw(drawColor);});
 rangeSlider.addEventListener('mousemove', () => {updateRangeLabel();});
 rangeSlider.addEventListener('touchmove', () => {updateRangeLabel();});
-colorInput.addEventListener('change', () => {changeColor(colorInput.value); draw(drawColor);})
+colorInput.addEventListener('change', () => {changeColor(colorInput.value); console.log(drawColor); draw(drawColor);});
+
 
 
 function updateRangeLabel() {
@@ -30,6 +33,7 @@ function updateGrid() {
     for (let i = 1; i <= val * val; i++) {
         const cell = document.createElement('div');
         cell.className = 'cell';
+        cell.style.backgroundColor = 'white';
         grid.appendChild(cell);
     }
 }
@@ -56,9 +60,16 @@ function draw(drawColor) {
         })
     }
 }
-
 function changeColor(value) {
     drawColor = value;
+}
+
+function changeBackgroundColor(value) {
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach(cell => {
+        console.log(value);
+        cell.style.backgroundColor = value;
+    })
 }
 
 window.onload = () => {
