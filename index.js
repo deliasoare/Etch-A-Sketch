@@ -72,6 +72,7 @@ function changeBackgroundColor(value) {
         cell.style.backgroundColor = value;
     })
 }
+lala 
 
 window.onload = () => {
     updateRangeLabel(val);
