@@ -18,8 +18,9 @@ rangeSlider.addEventListener('change', () => {changeBackgroundColor(backgroundCo
 rangeSlider.addEventListener('mousemove', () => {updateRangeLabel();});
 rangeSlider.addEventListener('touchmove', () => {updateRangeLabel();});
 colorInput.addEventListener('change', () => {changeColor(colorInput.value); draw(drawColor);});
-backgroundInput.addEventListener('input', () => {backgroundColor = backgroundInput.value;changeBackgroundColor(backgroundColor);});;
+backgroundInput.addEventListener('input', () => {backgroundColor = backgroundInput.value; changeBackgroundColor(backgroundColor);});;
 clearInput.addEventListener('click', () => {changeBackgroundColor(backgroundColor);})
+
 function updateRangeLabel() {
     const val = rangeSlider.value;
     rangeLabel.textContent = `${val} x ${val}`;
@@ -70,6 +71,8 @@ function changeBackgroundColor(value) {
         cell.style.backgroundColor = value;
     })
 }
+
+lalal 
 
 window.onload = () => {
     updateRangeLabel(val);
