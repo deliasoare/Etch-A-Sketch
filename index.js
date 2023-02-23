@@ -12,15 +12,14 @@ const rangeLabel = document.querySelector('.rangeLabel');
 const grid = document.querySelector('.grid');
 const colorInput = document.querySelector('.drawColor');
 const backgroundInput = document.querySelector('.backgroundColor');
+const clearInput = document.querySelector('.clearDrawing');
 
 rangeSlider.addEventListener('change', () => {changeBackgroundColor(backgroundColor); updateGrid(backgroundColor); draw(drawColor);});
 rangeSlider.addEventListener('mousemove', () => {updateRangeLabel();});
 rangeSlider.addEventListener('touchmove', () => {updateRangeLabel();});
 colorInput.addEventListener('change', () => {changeColor(colorInput.value); draw(drawColor);});
-backgroundInput.addEventListener('input', () => {console.log(backgroundInput.value);changeBackgroundColor(backgroundInput.value);});;
-
-
-
+backgroundInput.addEventListener('input', () => {backgroundColor = backgroundInput.value;changeBackgroundColor(backgroundColor);});;
+clearInput.addEventListener('click', () => {changeBackgroundColor(backgroundColor);})
 function updateRangeLabel() {
     const val = rangeSlider.value;
     rangeLabel.textContent = `${val} x ${val}`;
@@ -67,12 +66,10 @@ function changeColor(value) {
 
 function changeBackgroundColor(value) {
     const cells = document.querySelectorAll('.cell');
-    backgroundColor = value;
     cells.forEach(cell => {
         cell.style.backgroundColor = value;
     })
 }
-lala 
 
 window.onload = () => {
     updateRangeLabel(val);
