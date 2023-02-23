@@ -13,6 +13,7 @@ const grid = document.querySelector('.grid');
 const colorInput = document.querySelector('.drawColor');
 const backgroundInput = document.querySelector('.backgroundColor');
 const clearInput = document.querySelector('.clearDrawing');
+const eraseButton = document.querySelector('.eraseBlock');
 
 rangeSlider.addEventListener('change', () => {changeBackgroundColor(backgroundColor); updateGrid(backgroundColor); draw(drawColor);});
 rangeSlider.addEventListener('mousemove', () => {updateRangeLabel();});
@@ -20,6 +21,7 @@ rangeSlider.addEventListener('touchmove', () => {updateRangeLabel();});
 colorInput.addEventListener('change', () => {changeColor(colorInput.value); draw(drawColor);});
 backgroundInput.addEventListener('input', () => {backgroundColor = backgroundInput.value; changeBackgroundColor(backgroundColor);});;
 clearInput.addEventListener('click', () => {changeBackgroundColor(backgroundColor);})
+eraseButton.addEventListener('click', (e) => {toggleEraser(e);})
 
 function updateRangeLabel() {
     const val = rangeSlider.value;
@@ -72,7 +74,18 @@ function changeBackgroundColor(value) {
     })
 }
 
-lalal 
+function toggleEraser(e) {
+    if (e.target.value === "OFF") 
+        e.target.value = 'ON';
+    else if (e.target.value === 'ON')
+        e.target.value = 'OFF';
+        
+    if (e.target.value === 'ON') 
+        draw(backgroundColor);
+    else 
+        draw(drawColor);
+}
+ 
 
 window.onload = () => {
     updateRangeLabel(val);
