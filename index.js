@@ -1,13 +1,15 @@
 
 const DEFAULT_VALUE = 16;
-const DEFAULT_BACKGROUND = 'white';
-const DEFAULT_DRAW_COLOR = 'black';
-const DEFAULT_ERASE_TOGGLE = 'false';
+const DEFAULT_BACKGROUND = 'rgb(255,255,255)';
+const DEFAULT_DRAW_COLOR = 'rgb(0,0,0)';
+const DEFAULT_ERASE_TOGGLE = false;
+const DEFAULT_LIGHTEN_TOGGLE = false;
 
 let val = DEFAULT_VALUE;
 let drawColor = DEFAULT_DRAW_COLOR;
 let backgroundColor = DEFAULT_BACKGROUND;
-let eraser = false;
+let eraser = DEFAULT_ERASE_TOGGLE;
+let lighten = DEFAULT_LIGHTEN_TOGGLE;
 
 const rangeSlider = document.querySelector('.rangeSlider');
 const rangeLabel = document.querySelector('.rangeLabel');
@@ -16,6 +18,8 @@ const colorInput = document.querySelector('.drawColor');
 const backgroundInput = document.querySelector('.backgroundColor');
 const clearInput = document.querySelector('.clearDrawing');
 const eraseButton = document.querySelector('.eraseBlock');
+const lightenButton = document.querySelector('.lightenBlock');
+const buttons = [eraseButton, lightenButton];
 
 rangeSlider.addEventListener('change', () => {changeBackgroundColor(backgroundColor); updateGrid(); draw();});
 rangeSlider.addEventListener('mousemove', () => {updateRangeLabel();});
@@ -23,7 +27,11 @@ rangeSlider.addEventListener('touchmove', () => {updateRangeLabel();});
 colorInput.addEventListener('change', () => {changeColor(colorInput.value); draw();});
 backgroundInput.addEventListener('input', () => {backgroundColor = backgroundInput.value; changeBackgroundColor(backgroundColor);});;
 clearInput.addEventListener('click', () => {changeBackgroundColor(backgroundColor);})
-eraseButton.addEventListener('click', (e) => {toggleEraser(e);})
+eraseButton.addEventListener('click', () => {eraser = toggleButton(eraseButton, eraser); draw();})
+lightenButton.addEventListener('click', () => {lighten = toggleButton(lightenButton, lighten); draw();})
+
+
+
 
 function updateRangeLabel() {
     const val = rangeSlider.value;
@@ -48,11 +56,12 @@ function draw() {
     for (let i = 0; i < cells.length; i++) {
         cells[i].addEventListener('mousemove', (e) => {
             if (e.buttons === 1) {
-                if (eraser === false)
-                    cells[i].style.backgroundColor = drawColor;
-                else
+                if (eraser === true)
                     cells[i].style.backgroundColor = backgroundColor;
-
+                else if (lighten === true) 
+                    lightenBlock(cells[i]);
+                else
+                    cells[i].style.backgroundColor = drawColor;
             }
         })
         cells[i].addEventListener('touchmove', (e) => {
@@ -60,20 +69,72 @@ function draw() {
             var realTarget = document.elementFromPoint(myLocation.clientX, myLocation.clientY);
             cells.forEach(cell => {
                 if (realTarget === cell) {
-                    if (eraser === false)
-                    cells[i].style.backgroundColor = drawColor;
-                    else
+                    if (eraser === true)
                         cells[i].style.backgroundColor = backgroundColor;
+                    else if (lighten === true) 
+                        lightenBlock(cells[i]);
+                    else
+                        cells[i].style.backgroundColor = drawColor;
                 }
             })
         })
         cells[i].addEventListener('click', (e) => {
-            if (eraser === false)
-                cells[i].style.backgroundColor = drawColor;
-            else
+            if (eraser === true)
                 cells[i].style.backgroundColor = backgroundColor;
+            else if (lighten === true) 
+                lightenBlock(cells[i]);
+            else
+                cells[i].style.backgroundColor = drawColor;
         })
     }
+}
+function lightenBlock(block) {
+    let color = block.style.backgroundColor;
+    let [h,s,l] = convertToHSL(color);
+    block.style.backgroundColor = `hsl(${h},${s}%,${l+0.7}%)`;
+}
+function convertToHSL(color) {
+    // Convert RGB to HSL
+    let h, s, l;
+    let max, min;
+    color = color.substring(4);
+    color = color.replace(")", "");
+    let [r, g, b] = color.split(",")
+    r = r / 255; g = g / 255; b = b / 255;
+    max = r;
+    min = r;
+    if (max < g)
+        max = g;
+    if (min < r)
+        min = g;
+    if (min > b)
+        min = b;
+    if (max < b) 
+        max = b;
+    l = Math.round((min + max) * 50);
+    if (min === max) {
+        s = 0;
+        h = 0;
+    }
+    else {
+        if ((l / 100) <= 0.5)
+            s = (max-min)/(max+min);
+        else
+            s = (max-min)/(2.0 -max-min);
+        s = Math.round(s * 100);
+        if (max === r)
+            h = (g-b)/(max-min);
+        else if (max === g)
+            h = 2.0 + (b-r)/(max-min);
+        else
+            h = 4.0 + (r-g)/(max-min);
+        
+        h = h * 60;
+        if (h < 0)
+            h = h + 360;
+        h = Math.round(h);
+    }
+    return [h, s, l];
 }
 function changeColor(value) {
     drawColor = value;
@@ -86,24 +147,32 @@ function changeBackgroundColor(value) {
     })
 }
 
-function toggleEraser(e) {
-    if (e.target.value === "OFF") {
-        e.target.value = 'ON';
-        eraseButton.classList.remove('deactivated');
-        eraseButton.classList.add('activated');
-        eraser = true;
+function toggleButton(selectedButton, buttonValue) {
+    if (selectedButton.value === "OFF")
+        buttons.forEach(button => {
+            if (button !== selectedButton) {
+                if (button.className === 'eraseBlock activated') {
+                    eraser = toggleButton(eraseButton, eraser);
+                }
+                else if (button.className === 'lightenBlock activated')
+                    lighten = toggleButton(lightenButton, lighten);
+            }
+        })
+    if (selectedButton.value === "OFF") {
+        selectedButton.value = 'ON';
+        selectedButton.classList.remove('deactivated');
+        selectedButton.classList.add('activated');
+        buttonValue = true;
+        return buttonValue;
     }
-    else if (e.target.value === 'ON') {
-        e.target.value = 'OFF';
-        eraseButton.classList.add('deactivated');
-        eraseButton.classList.remove('activated');
-        eraser=false;
-
+    else if (selectedButton.value === 'ON') {
+        selectedButton.value = 'OFF';
+        selectedButton.classList.add('deactivated');
+        selectedButton.classList.remove('activated');
+        buttonValue = false;
+        return buttonValue;
     }
-        
-    draw();
 }
- 
 
 window.onload = () => {
     updateRangeLabel();
