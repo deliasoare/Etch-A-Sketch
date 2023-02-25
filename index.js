@@ -2,10 +2,12 @@
 const DEFAULT_VALUE = 16;
 const DEFAULT_BACKGROUND = 'white';
 const DEFAULT_DRAW_COLOR = 'black';
+const DEFAULT_ERASE_TOGGLE = 'false';
 
 let val = DEFAULT_VALUE;
 let drawColor = DEFAULT_DRAW_COLOR;
 let backgroundColor = DEFAULT_BACKGROUND;
+let eraser = false;
 
 const rangeSlider = document.querySelector('.rangeSlider');
 const rangeLabel = document.querySelector('.rangeLabel');
@@ -15,10 +17,10 @@ const backgroundInput = document.querySelector('.backgroundColor');
 const clearInput = document.querySelector('.clearDrawing');
 const eraseButton = document.querySelector('.eraseBlock');
 
-rangeSlider.addEventListener('change', () => {changeBackgroundColor(backgroundColor); updateGrid(backgroundColor); draw(drawColor);});
+rangeSlider.addEventListener('change', () => {changeBackgroundColor(backgroundColor); updateGrid(); draw();});
 rangeSlider.addEventListener('mousemove', () => {updateRangeLabel();});
 rangeSlider.addEventListener('touchmove', () => {updateRangeLabel();});
-colorInput.addEventListener('change', () => {changeColor(colorInput.value); draw(drawColor);});
+colorInput.addEventListener('change', () => {changeColor(colorInput.value); draw();});
 backgroundInput.addEventListener('input', () => {backgroundColor = backgroundInput.value; changeBackgroundColor(backgroundColor);});;
 clearInput.addEventListener('click', () => {changeBackgroundColor(backgroundColor);})
 eraseButton.addEventListener('click', (e) => {toggleEraser(e);})
@@ -28,7 +30,7 @@ function updateRangeLabel() {
     rangeLabel.textContent = `${val} x ${val}`;
 }
 
-function updateGrid(backgroundColor="white") {
+function updateGrid() {
     grid.innerHTML = '';
     const val = rangeSlider.value;
     grid.style.gridTemplateColumns = `repeat(${val}, 1fr)`;
@@ -41,12 +43,16 @@ function updateGrid(backgroundColor="white") {
     }
 }
 
-function draw(drawColor) {
+function draw() {
     const cells = document.querySelectorAll('.cell');
     for (let i = 0; i < cells.length; i++) {
         cells[i].addEventListener('mousemove', (e) => {
             if (e.buttons === 1) {
-                cells[i].style.backgroundColor = drawColor;
+                if (eraser === false)
+                    cells[i].style.backgroundColor = drawColor;
+                else
+                    cells[i].style.backgroundColor = backgroundColor;
+
             }
         })
         cells[i].addEventListener('touchmove', (e) => {
@@ -54,12 +60,18 @@ function draw(drawColor) {
             var realTarget = document.elementFromPoint(myLocation.clientX, myLocation.clientY);
             cells.forEach(cell => {
                 if (realTarget === cell) {
-                    cell.style.backgroundColor = drawColor;
+                    if (eraser === false)
+                    cells[i].style.backgroundColor = drawColor;
+                    else
+                        cells[i].style.backgroundColor = backgroundColor;
                 }
             })
         })
         cells[i].addEventListener('click', (e) => {
-            cells[i].style.backgroundColor = drawColor;
+            if (eraser === false)
+                cells[i].style.backgroundColor = drawColor;
+            else
+                cells[i].style.backgroundColor = backgroundColor;
         })
     }
 }
@@ -75,20 +87,27 @@ function changeBackgroundColor(value) {
 }
 
 function toggleEraser(e) {
-    if (e.target.value === "OFF") 
+    if (e.target.value === "OFF") {
         e.target.value = 'ON';
-    else if (e.target.value === 'ON')
+        eraseButton.classList.remove('deactivated');
+        eraseButton.classList.add('activated');
+        eraser = true;
+    }
+    else if (e.target.value === 'ON') {
         e.target.value = 'OFF';
+        eraseButton.classList.add('deactivated');
+        eraseButton.classList.remove('activated');
+        eraser=false;
+
+    }
         
-    if (e.target.value === 'ON') 
-        draw(backgroundColor);
-    else 
-        draw(drawColor);
+    draw();
 }
  
 
 window.onload = () => {
-    updateRangeLabel(val);
-    updateGrid(val);
-    draw(drawColor);
+    updateRangeLabel();
+    updateGrid();
+    draw();
 }
+
