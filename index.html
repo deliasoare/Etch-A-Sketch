@@ -7,30 +7,29 @@
         <link href="styles.css" rel="stylesheet">
     </head>
     <body>
-            <h2 class="title">Etch a Sketch </h2>
         <div class="container">
             <div class="main">
                 <div class="drawColorContainer">
-                    <label>Draw color</label>
                     <input class="drawColor" type="color">
+                    <label>Draw color</label>
                 </div>
                 <div class="backgroundColorContainer">
-                    <label>Background color</label>
                     <input class="backgroundColor" type="color" value="#FFFFFF">
+                    <label>Background color</label>
                 </div>
                 <button class="eraseBlock deactivated" value="OFF">Eraser</button>
                 <button class="lightenBlock deactivated" value="OFF">Lighten</button>
                 <button class="shadeBlock deactivated" value="OFF">Shade</button>
-                <div class="clearDrawingContainer">
-                    <button class="clearDrawing" >Clear</button>
-                </div>
-
+                <button class="clearDrawing" >Clear</button>
                 <div class="range">
                     <input class="rangeSlider" type="range" min="1" max="64" value="16"> 
                     <div class="rangeLabel"></div>
             </div>
             </div>
-            <div class="grid"></div>
+            <div class="gridContainer">
+                <h2 class="title">Etch a Sketch </h2>
+                <div class="grid"></div>
+            </div>
         </div>
     </body>
     <script src="index.js"></script>
