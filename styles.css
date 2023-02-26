@@ -1,9 +1,5 @@
 body {
     background-color:hsla(198, 53%, 54%, 0.39);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100%;
 }
 :root {
     --blue:hsla(198, 100%, 70%, 1);
@@ -12,11 +8,6 @@ body {
 .container {
     display:flex; 
     align-items:center;
-    left:50%;
-    top:50%;
-    position:absolute;
-    transform:translate(-50%, -50%);
-
 }
 .grid {
     display:grid;
