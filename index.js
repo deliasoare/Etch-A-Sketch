@@ -4,12 +4,14 @@ const DEFAULT_BACKGROUND = 'rgb(255,255,255)';
 const DEFAULT_DRAW_COLOR = 'rgb(0,0,0)';
 const DEFAULT_ERASE_TOGGLE = false;
 const DEFAULT_LIGHTEN_TOGGLE = false;
+const DEFAULT_SHADE_TOGGLE = false;
 
 let val = DEFAULT_VALUE;
 let drawColor = DEFAULT_DRAW_COLOR;
 let backgroundColor = DEFAULT_BACKGROUND;
 let eraser = DEFAULT_ERASE_TOGGLE;
 let lighten = DEFAULT_LIGHTEN_TOGGLE;
+let shade = DEFAULT_SHADE_TOGGLE;
 
 const rangeSlider = document.querySelector('.rangeSlider');
 const rangeLabel = document.querySelector('.rangeLabel');
@@ -19,7 +21,8 @@ const backgroundInput = document.querySelector('.backgroundColor');
 const clearInput = document.querySelector('.clearDrawing');
 const eraseButton = document.querySelector('.eraseBlock');
 const lightenButton = document.querySelector('.lightenBlock');
-const buttons = [eraseButton, lightenButton];
+const shadeButton = document.querySelector('.shadeBlock');
+const toggleButtons = [eraseButton, lightenButton, shadeButton];
 
 rangeSlider.addEventListener('change', () => {changeBackgroundColor(backgroundColor); updateGrid(); draw();});
 rangeSlider.addEventListener('mousemove', () => {updateRangeLabel();});
@@ -29,8 +32,7 @@ backgroundInput.addEventListener('input', () => {backgroundColor = backgroundInp
 clearInput.addEventListener('click', () => {changeBackgroundColor(backgroundColor);})
 eraseButton.addEventListener('click', () => {eraser = toggleButton(eraseButton, eraser); draw();})
 lightenButton.addEventListener('click', () => {lighten = toggleButton(lightenButton, lighten); draw();})
-
-
+shadeButton.addEventListener('click', () => {shade = toggleButton(shadeButton , shade); draw();})
 
 
 function updateRangeLabel() {
@@ -60,6 +62,8 @@ function draw() {
                     cells[i].style.backgroundColor = backgroundColor;
                 else if (lighten === true) 
                     lightenBlock(cells[i]);
+                else if (shade === true)
+                    shadeBlock(cells[i]);
                 else
                     cells[i].style.backgroundColor = drawColor;
             }
@@ -69,10 +73,13 @@ function draw() {
             var realTarget = document.elementFromPoint(myLocation.clientX, myLocation.clientY);
             cells.forEach(cell => {
                 if (realTarget === cell) {
+                    console.log(realTarget);
                     if (eraser === true)
                         cells[i].style.backgroundColor = backgroundColor;
                     else if (lighten === true) 
                         lightenBlock(cells[i]);
+                    else if (shade === true)
+                        shadeBlock(cells[i]);
                     else
                         cells[i].style.backgroundColor = drawColor;
                 }
@@ -83,6 +90,8 @@ function draw() {
                 cells[i].style.backgroundColor = backgroundColor;
             else if (lighten === true) 
                 lightenBlock(cells[i]);
+             else if (shade === true)
+                shadeBlock(cells[i]);
             else
                 cells[i].style.backgroundColor = drawColor;
         })
@@ -93,8 +102,12 @@ function lightenBlock(block) {
     let [h,s,l] = convertToHSL(color);
     block.style.backgroundColor = `hsl(${h},${s}%,${l+0.7}%)`;
 }
+function shadeBlock(block) { 
+    let color = block.style.backgroundColor;
+    let [h, s, l] = convertToHSL(color);
+    block.style.backgroundColor = `hsl(${h}, ${s}%, ${l-0.7}%)`;
+}
 function convertToHSL(color) {
-    // Convert RGB to HSL
     let h, s, l;
     let max, min;
     color = color.substring(4);
@@ -103,14 +116,10 @@ function convertToHSL(color) {
     r = r / 255; g = g / 255; b = b / 255;
     max = r;
     min = r;
-    if (max < g)
-        max = g;
-    if (min < r)
-        min = g;
-    if (min > b)
-        min = b;
-    if (max < b) 
-        max = b;
+    if (max < g) max = g;
+    if (min < g) min = g;
+    if (min > b) min = b;
+    if (max < b) max = b;
     l = Math.round((min + max) * 50);
     if (min === max) {
         s = 0;
@@ -148,17 +157,18 @@ function changeBackgroundColor(value) {
 }
 
 function toggleButton(selectedButton, buttonValue) {
-    if (selectedButton.value === "OFF")
-        buttons.forEach(button => {
+    console.log(selectedButton);
+    if (selectedButton.value === "OFF") {
+        toggleButtons.forEach(button => {
             if (button !== selectedButton) {
-                if (button.className === 'eraseBlock activated') {
+                if (button.className === 'eraseBlock activated')
                     eraser = toggleButton(eraseButton, eraser);
-                }
-                else if (button.className === 'lightenBlock activated')
+                if (button.className === 'lightenBlock activated')
                     lighten = toggleButton(lightenButton, lighten);
+                if (button.className === 'shadeBlock activated')
+                    shade = toggleButton(shadeButton, shade);
             }
         })
-    if (selectedButton.value === "OFF") {
         selectedButton.value = 'ON';
         selectedButton.classList.remove('deactivated');
         selectedButton.classList.add('activated');
