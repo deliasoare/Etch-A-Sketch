@@ -146,3 +146,6 @@ button {
 .rangeLabel {
     color:hsla(17, 100%, 70%, 1)
 }
+.clearDrawing, .eraseBlock, .range {
+    margin-top:10%;
+}

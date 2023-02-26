@@ -5,6 +5,10 @@ const DEFAULT_DRAW_COLOR = 'rgb(0,0,0)';
 const DEFAULT_ERASE_TOGGLE = false;
 const DEFAULT_LIGHTEN_TOGGLE = false;
 const DEFAULT_SHADE_TOGGLE = false;
+const DEFAULT_PALETTE_TOGGLE = false;
+const SITE_ORANGE = 'hsla(17, 100%, 70%, 1)';
+const SITE_BLUE = 'hsla(198, 100%, 70%, 1)';
+ 
 
 let val = DEFAULT_VALUE;
 let drawColor = DEFAULT_DRAW_COLOR;
@@ -12,6 +16,7 @@ let backgroundColor = DEFAULT_BACKGROUND;
 let eraser = DEFAULT_ERASE_TOGGLE;
 let lighten = DEFAULT_LIGHTEN_TOGGLE;
 let shade = DEFAULT_SHADE_TOGGLE;
+let palette = DEFAULT_PALETTE_TOGGLE;
 
 const rangeSlider = document.querySelector('.rangeSlider');
 const rangeLabel = document.querySelector('.rangeLabel');
@@ -22,7 +27,8 @@ const clearInput = document.querySelector('.clearDrawing');
 const eraseButton = document.querySelector('.eraseBlock');
 const lightenButton = document.querySelector('.lightenBlock');
 const shadeButton = document.querySelector('.shadeBlock');
-const toggleButtons = [eraseButton, lightenButton, shadeButton];
+const paletteButton = document.querySelector('.sitePalette');
+const toggleButtons = [eraseButton, lightenButton, shadeButton, paletteButton];
 
 rangeSlider.addEventListener('change', () => {changeBackgroundColor(backgroundColor); updateGrid(); draw();});
 rangeSlider.addEventListener('mousemove', () => {updateRangeLabel();});
@@ -33,6 +39,7 @@ clearInput.addEventListener('click', () => {changeBackgroundColor(backgroundColo
 eraseButton.addEventListener('click', () => {eraser = toggleButton(eraseButton, eraser); draw();})
 lightenButton.addEventListener('click', () => {lighten = toggleButton(lightenButton, lighten); draw();})
 shadeButton.addEventListener('click', () => {shade = toggleButton(shadeButton , shade); draw();})
+paletteButton.addEventListener('click', () => {palette = toggleButton(paletteButton, palette); draw();})
 
 
 function updateRangeLabel() {
@@ -64,6 +71,8 @@ function draw() {
                     lightenBlock(cells[i]);
                 else if (shade === true)
                     shadeBlock(cells[i]);
+                else if (palette === true)
+                    sitePalette(cells[i]);
                 else
                     cells[i].style.backgroundColor = drawColor;
             }
@@ -79,6 +88,8 @@ function draw() {
                         lightenBlock(cell);
                     else if (shade === true)
                         shadeBlock(cell);
+                    else if (palette === true)
+                        sitePalette(cells[i]);
                     else
                         cell.style.backgroundColor = drawColor;
                 }
@@ -91,6 +102,8 @@ function draw() {
                 lightenBlock(cells[i]);
              else if (shade === true)
                 shadeBlock(cells[i]);
+            else if (palette === true)
+                sitePalette(cells[i]);
             else
                 cells[i].style.backgroundColor = drawColor;
         })
@@ -165,6 +178,8 @@ function toggleButton(selectedButton, buttonValue) {
                     lighten = toggleButton(lightenButton, lighten);
                 if (button.className === 'shadeBlock activated')
                     shade = toggleButton(shadeButton, shade);
+                if (button.className === 'sitePalette activated')
+                    shade = toggleButton(paletteButton, shade);
             }
         })
         selectedButton.value = 'ON';
@@ -180,6 +195,14 @@ function toggleButton(selectedButton, buttonValue) {
         buttonValue = false;
         return buttonValue;
     }
+}
+
+function sitePalette(block) {
+    let number = Math.floor(Math.random() * 2) + 1;
+    if (number === 1)
+        block.style.backgroundColor = SITE_ORANGE;
+    else
+        block.style.backgroundColor = SITE_BLUE;
 }
 
 window.onload = () => {
