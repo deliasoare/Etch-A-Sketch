@@ -89,7 +89,7 @@ function draw() {
                     else if (shade === true)
                         shadeBlock(cell);
                     else if (palette === true)
-                        sitePalette(cells[i]);
+                        sitePalette(cell);
                     else
                         cell.style.backgroundColor = drawColor;
                 }
