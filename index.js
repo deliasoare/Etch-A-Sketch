@@ -73,15 +73,14 @@ function draw() {
             var realTarget = document.elementFromPoint(myLocation.clientX, myLocation.clientY);
             cells.forEach(cell => {
                 if (realTarget === cell) {
-                    console.log(realTarget);
                     if (eraser === true)
-                        cells[i].style.backgroundColor = backgroundColor;
+                        cell.style.backgroundColor = backgroundColor;
                     else if (lighten === true) 
-                        lightenBlock(cells[i]);
+                        lightenBlock(cell);
                     else if (shade === true)
-                        shadeBlock(cells[i]);
+                        shadeBlock(cell);
                     else
-                        cells[i].style.backgroundColor = drawColor;
+                        cell.style.backgroundColor = drawColor;
                 }
             })
         })
@@ -157,7 +156,6 @@ function changeBackgroundColor(value) {
 }
 
 function toggleButton(selectedButton, buttonValue) {
-    console.log(selectedButton);
     if (selectedButton.value === "OFF") {
         toggleButtons.forEach(button => {
             if (button !== selectedButton) {
