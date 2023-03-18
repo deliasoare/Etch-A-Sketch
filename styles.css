@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap');
 body {
     background-color:hsla(198, 53%, 54%, 0.39);
 }
@@ -141,4 +142,11 @@ button {
 }
 .clearDrawing, .eraseBlock, .range {
     margin-top:10%;
+}
+.footer {
+    padding:2rem;
+    text-align:center;
+    color:var(--orange);
+    margin-top:2rem;
+    font-family: 'Alfa Slab One', cursive;
 }
